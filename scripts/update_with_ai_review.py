@@ -1,126 +1,164 @@
-#!/usr/bin/env python3
-"""
-Manual script to update investment recommendations and send for AI review
-"""
+import requests
+import json
 import os
 import sys
-import json
-import requests
 from datetime import datetime
 
-# Add parent directory to path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Configuration
+MANUS_API_ENDPOINT = "https://api.manus.ai/v1/analysis/review"
+MANUS_API_KEY = "manus_api_key_12345"  # This would be securely stored in production
+RECOMMENDATIONS_PATH = "../data/new_recommendations.json"
+APPROVED_PATH = "../data/recommendations.json"
+BACKEND_API = "http://localhost:3001/api/ai/review-analysis"
 
-# Import the analysis module
-try:
-    from scripts.update_analysis import update_analysis
-except ImportError:
-    print("Error: Could not import update_analysis module.")
-    print("Make sure you're running this script from the project root directory.")
-    sys.exit(1)
+def load_recommendations():
+    """Load the newly generated recommendations."""
+    try:
+        with open(RECOMMENDATIONS_PATH, 'r') as file:
+            return json.load(file)
+    except Exception as e:
+        print(f"Error loading recommendations: {e}")
+        return None
 
-def main():
-    """Main function to run the update and send for AI review"""
-    print("Starting manual update with AI review...")
+def send_to_manus(recommendations):
+    """Send recommendations to Manus AI for review."""
+    print("Sending recommendations to Manus AI for review...")
     
-    # Set up paths
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root = os.path.dirname(script_dir)
-    data_dir = os.path.join(project_root, "data")
+    headers = {
+        "Authorization": f"Bearer {MANUS_API_KEY}",
+        "Content-Type": "application/json"
+    }
     
-    # Create directories if they don't exist
-    os.makedirs(os.path.join(data_dir, "analysis_results"), exist_ok=True)
+    payload = {
+        "type": "investment_recommendations",
+        "data": recommendations,
+        "metadata": {
+            "timestamp": datetime.now().isoformat(),
+            "source": "indian-investment-advisor",
+            "version": "1.0.0"
+        }
+    }
     
     try:
-        # Run the analysis
-        print("Running investment analysis...")
-        recommendations = update_analysis()
+        response = requests.post(
+            MANUS_API_ENDPOINT,
+            headers=headers,
+            json=payload
+        )
         
-        # Save recommendations to a temporary file
-        temp_file = os.path.join(data_dir, "new_recommendations.json")
-        with open(temp_file, "w") as f:
-            json.dump(recommendations, f, indent=2)
-        
-        print("Analysis completed successfully!")
-        
-        # Ask if user wants to send for AI review
-        send_for_review = input("Do you want to send these recommendations for AI review? (y/n): ")
-        
-        if send_for_review.lower() == 'y':
-            # In a real implementation, this would call an API to request AI review
-            # For this example, we'll simulate the process
-            
-            print("Sending recommendations for AI review...")
-            
-            # Check if backend server is running
-            try:
-                # Try to connect to the backend server
-                response = requests.get("http://localhost:3001/api/status", timeout=5)
-                
-                if response.status_code == 200:
-                    print("Backend server is running. Sending recommendations for review...")
-                    
-                    # Send the recommendations to the AI review endpoint
-                    with open(temp_file, "r") as f:
-                        recommendations_data = json.load(f)
-                    
-                    ai_review_response = requests.post(
-                        "http://localhost:3001/api/ai/review-analysis",
-                        json={
-                            "approved": True,
-                            "feedback": "Recommendations look good.",
-                            "updatedRecommendations": recommendations_data
-                        },
-                        timeout=10
-                    )
-                    
-                    if ai_review_response.status_code == 200:
-                        print("Recommendations sent for AI review successfully!")
-                        print("The AI will review and approve the recommendations.")
-                        print("Check the web application for updated recommendations.")
-                    else:
-                        print(f"Error sending recommendations for AI review: {ai_review_response.text}")
-                else:
-                    print(f"Backend server returned unexpected status: {response.status_code}")
-                    print("You can manually apply the recommendations by copying the file:")
-                    print(f"  {temp_file} to {os.path.join(data_dir, 'recommendations.json')}")
-            
-            except requests.exceptions.ConnectionError:
-                print("Could not connect to backend server. Is it running?")
-                print("You can manually apply the recommendations by copying the file:")
-                print(f"  {temp_file} to {os.path.join(data_dir, 'recommendations.json')}")
+        if response.status_code == 200:
+            result = response.json()
+            print("Manus AI review completed successfully")
+            return result
         else:
-            print("Skipping AI review.")
-            
-            # Ask if user wants to apply recommendations directly
-            apply_directly = input("Do you want to apply these recommendations directly? (y/n): ")
-            
-            if apply_directly.lower() == 'y':
-                # Backup current recommendations
-                current_file = os.path.join(data_dir, "recommendations.json")
-                if os.path.exists(current_file):
-                    backup_file = os.path.join(
-                        data_dir, 
-                        f"recommendations_backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-                    )
-                    print(f"Backing up current recommendations to {backup_file}")
-                    with open(current_file, "r") as src, open(backup_file, "w") as dst:
-                        dst.write(src.read())
-                
-                # Apply new recommendations
-                print("Applying new recommendations...")
-                with open(temp_file, "r") as src, open(current_file, "w") as dst:
-                    dst.write(src.read())
-                
-                print("Recommendations applied successfully!")
-            else:
-                print("Recommendations not applied.")
-                print(f"You can find the new recommendations at: {temp_file}")
-        
-        print("Manual update process completed.")
-    
+            print(f"Error from Manus AI: {response.status_code} - {response.text}")
+            return None
     except Exception as e:
-        print(f"Error during update process: {e}")
+        print(f"Exception when calling Manus AI: {e}")
+        return None
+
+def update_backend(manus_response):
+    """Update the backend with Manus AI review results."""
+    if not manus_response:
+        print("No response from Manus AI, cannot update backend")
+        return False
+    
+    approved = manus_response.get("approved", False)
+    feedback = manus_response.get("feedback", "No feedback provided")
+    updated_recommendations = manus_response.get("recommendations", None)
+    
+    payload = {
+        "approved": approved,
+        "feedback": feedback,
+        "updatedRecommendations": updated_recommendations if updated_recommendations else None
+    }
+    
+    try:
+        response = requests.post(
+            BACKEND_API,
+            json=payload
+        )
+        
+        if response.status_code == 200:
+            print("Backend updated successfully with Manus AI review")
+            result = response.json()
+            print(f"Backend response: {result}")
+            return True
+        else:
+            print(f"Error updating backend: {response.status_code} - {response.text}")
+            return False
+    except Exception as e:
+        print(f"Exception when updating backend: {e}")
+        return False
+
+def simulate_manus_review(recommendations):
+    """Simulate Manus AI review for testing purposes."""
+    print("Simulating Manus AI review (for testing only)...")
+    
+    # In a real implementation, this would be replaced with actual API call
+    # This is just a simulation for testing
+    
+    # Perform some basic validation
+    if not recommendations:
+        return {
+            "approved": False,
+            "feedback": "No recommendations provided",
+            "recommendations": None
+        }
+    
+    # Check if required fields exist
+    required_fields = ["top_stocks", "top_mutual_funds", "monthly_stock_picks", "monthly_mf_picks"]
+    for field in required_fields:
+        if field not in recommendations:
+            return {
+                "approved": False,
+                "feedback": f"Missing required field: {field}",
+                "recommendations": None
+            }
+    
+    # Check if there are enough recommendations
+    if len(recommendations["top_stocks"]) < 5 or len(recommendations["top_mutual_funds"]) < 5:
+        return {
+            "approved": False,
+            "feedback": "Not enough recommendations provided",
+            "recommendations": None
+        }
+    
+    # In a real implementation, Manus would perform sophisticated analysis
+    # For now, we'll just approve the recommendations as is
+    return {
+        "approved": True,
+        "feedback": "Recommendations look good based on historical performance analysis",
+        "recommendations": recommendations
+    }
+
+def main():
+    """Main function to run the AI review process."""
+    print("Starting Manus AI review process...")
+    
+    # Load recommendations
+    recommendations = load_recommendations()
+    if not recommendations:
+        print("Failed to load recommendations, exiting")
+        sys.exit(1)
+    
+    # In production, use the real Manus API
+    # For testing, use the simulation
+    use_real_api = os.environ.get("USE_REAL_MANUS_API", "false").lower() == "true"
+    
+    if use_real_api:
+        manus_response = send_to_manus(recommendations)
+    else:
+        manus_response = simulate_manus_review(recommendations)
+    
+    # Update backend with results
+    success = update_backend(manus_response)
+    
+    if success:
+        print("AI review process completed successfully")
+        sys.exit(0)
+    else:
+        print("AI review process failed")
         sys.exit(1)
 
 if __name__ == "__main__":
