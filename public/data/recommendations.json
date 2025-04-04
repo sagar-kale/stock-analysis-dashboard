@@ -1,0 +1,156 @@
+{
+  "top_stocks": [
+    "DIVI S LABORATORIES LTD",
+    "BHARTI AIRTEL LIMITED",
+    "KOTAK MAHINDRA BANK LTD",
+    "UPL LIMITED",
+    "HDFC BANK LTD",
+    "SHREE CEMENT LIMITED",
+    "BAJAJ FINANCE LIMITED",
+    "ICICI BANK LTD.",
+    "BAJAJ FINSERV LTD.",
+    "JSW STEEL LIMITED"
+  ],
+  "top_mutual_funds": [
+    "Franklin India Floating Rate Di",
+    "Taurus ELSS Tax Saver Fund-Dire",
+    "Franklin India Money Market Fun",
+    "Taurus Nifty 50 Index Fund-Dire",
+    "Taurus Ethical Fund-Direct Plan",
+    "Taurus Largecap Equity Fund - D",
+    "Taurus Largecap Equity Fund - D",
+    "Taurus Banking & Financial Serv",
+    "Taurus Flexi Cap Fund - Direct ",
+    "Taurus Infrastructure Fund-Dire"
+  ],
+  "monthly_stock_picks": {
+    "2024-08": [
+      "MAHINDRA & MAHINDRA LTD",
+      "INFOSYS LIMITED",
+      "TECH MAHINDRA LIMITED",
+      "HDFC LIFE INS CO LTD",
+      "DIVI S LABORATORIES LTD"
+    ],
+    "2024-09": [
+      "INFOSYS LIMITED",
+      "TECH MAHINDRA LIMITED",
+      "HDFC LIFE INS CO LTD",
+      "SBI LIFE INSURANCE CO LTD",
+      "HCL TECHNOLOGIES LTD"
+    ],
+    "2024-10": [
+      "SUN PHARMACEUTICAL IND L",
+      "BAJAJ FINSERV LTD.",
+      "HCL TECHNOLOGIES LTD",
+      "SBI LIFE INSURANCE CO LTD",
+      "HDFC LIFE INS CO LTD"
+    ],
+    "2024-11": [
+      "DIVI S LABORATORIES LTD",
+      "BHARTI AIRTEL LIMITED",
+      "HCL TECHNOLOGIES LTD",
+      "SUN PHARMACEUTICAL IND L",
+      "HDFC BANK LTD"
+    ],
+    "2024-12": [
+      "DIVI S LABORATORIES LTD",
+      "HDFC BANK LTD",
+      "WIPRO LTD",
+      "HCL TECHNOLOGIES LTD",
+      "ICICI BANK LTD."
+    ],
+    "2025-01": [
+      "DIVI S LABORATORIES LTD",
+      "WIPRO LTD",
+      "TECH MAHINDRA LIMITED",
+      "HCL TECHNOLOGIES LTD",
+      "HDFC BANK LTD"
+    ],
+    "2025-02": [
+      "WIPRO LTD",
+      "BAJAJ FINANCE LIMITED",
+      "SHREE CEMENT LIMITED",
+      "KOTAK MAHINDRA BANK LTD",
+      "MAHINDRA & MAHINDRA LTD"
+    ],
+    "2025-03": [
+      "BAJAJ FINANCE LIMITED",
+      "BAJAJ FINSERV LTD.",
+      "UPL LIMITED",
+      "KOTAK MAHINDRA BANK LTD",
+      "SHREE CEMENT LIMITED"
+    ],
+    "2025-04": [
+      "BAJAJ FINANCE LIMITED",
+      "BAJAJ FINSERV LTD.",
+      "UPL LIMITED",
+      "KOTAK MAHINDRA BANK LTD",
+      "SHREE CEMENT LIMITED"
+    ]
+  },
+  "monthly_mf_picks": {
+    "2024-08": [
+      "Taurus Ethical Fund-Direct Plan",
+      "Taurus ELSS Tax Saver Fund-Dire",
+      "Taurus Nifty 50 Index Fund-Dire",
+      "Franklin India Floating Rate Di",
+      "Franklin India Money Market Fun"
+    ],
+    "2024-09": [
+      "Taurus Ethical Fund-Direct Plan",
+      "Taurus ELSS Tax Saver Fund-Dire",
+      "Taurus Nifty 50 Index Fund-Dire",
+      "Franklin India Floating Rate Di",
+      "Franklin India Money Market Fun"
+    ],
+    "2024-10": [
+      "Taurus Ethical Fund-Direct Plan",
+      "Taurus ELSS Tax Saver Fund-Dire",
+      "Taurus Nifty 50 Index Fund-Dire",
+      "Franklin India Floating Rate Di",
+      "Franklin India Money Market Fun"
+    ],
+    "2024-11": [
+      "Franklin India Floating Rate Di",
+      "Franklin India Money Market Fun",
+      "Taurus ELSS Tax Saver Fund-Dire",
+      "Taurus Nifty 50 Index Fund-Dire",
+      "Taurus Ethical Fund-Direct Plan"
+    ],
+    "2024-12": [
+      "Franklin India Floating Rate Di",
+      "Franklin India Money Market Fun",
+      "Taurus ELSS Tax Saver Fund-Dire",
+      "Taurus Nifty 50 Index Fund-Dire",
+      "Taurus Ethical Fund-Direct Plan"
+    ],
+    "2025-01": [
+      "Franklin India Floating Rate Di",
+      "Franklin India Money Market Fun",
+      "Taurus ELSS Tax Saver Fund-Dire",
+      "Taurus Ethical Fund-Direct Plan",
+      "Taurus Nifty 50 Index Fund-Dire"
+    ],
+    "2025-02": [
+      "Franklin India Floating Rate Di",
+      "Franklin India Money Market Fun",
+      "Taurus ELSS Tax Saver Fund-Dire",
+      "Taurus Nifty 50 Index Fund-Dire",
+      "Taurus Ethical Fund-Direct Plan"
+    ],
+    "2025-03": [
+      "Franklin India Floating Rate Di",
+      "Franklin India Money Market Fun",
+      "Taurus Nifty 50 Index Fund-Dire",
+      "Taurus ELSS Tax Saver Fund-Dire",
+      "Taurus Ethical Fund-Direct Plan"
+    ],
+    "2025-04": [
+      "Franklin India Floating Rate Di",
+      "Franklin India Money Market Fun",
+      "Taurus Nifty 50 Index Fund-Dire",
+      "Taurus ELSS Tax Saver Fund-Dire",
+      "Taurus Ethical Fund-Direct Plan"
+    ]
+  }
+}
