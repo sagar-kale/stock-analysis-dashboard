@@ -5,10 +5,11 @@
 
 [build.environment]
   NODE_VERSION = "18"
+  NPM_VERSION = "9"
   NEXT_PUBLIC_API_URL = "/.netlify/functions/api"
 
 [functions]
-  directory = "backend/functions"
+  directory = "netlify/functions"
   node_bundler = "esbuild"
 
 [[redirects]]
