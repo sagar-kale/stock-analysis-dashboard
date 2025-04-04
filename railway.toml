@@ -1,0 +1,22 @@
+name: indian-investment-advisor-backend
+region: singapore
+services:
+  - type: web
+    name: backend
+    env: node
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+    healthCheckPath: /api/status
+    autoDeploy: true
+
+  - type: cron
+    name: monthly-update
+    env: python
+    plan: free
+    schedule: "0 0 1 * *"
+    buildCommand: pip install pandas numpy matplotlib requests
+    startCommand: python scripts/update_analysis.py
